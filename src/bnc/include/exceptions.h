@@ -1,0 +1,20 @@
+#ifndef BNC_EXCEPTIONS_H
+#define BNC_EXCEPTIONS_H
+
+#include <exception/exception.h>
+
+
+create_exception(compiler_exception);
+create_derived_exception(compiler_parallel_exception,compiler_exception);
+create_derived_exception(compiler_read_exception,compiler_exception);
+create_derived_exception(compiler_write_exception,compiler_exception);
+create_derived_exception(compiler_ordering_exception,compiler_exception);
+create_derived_exception(compiler_debug_exception,compiler_exception);
+create_derived_exception(compiler_mapping_exception,compiler_exception);
+create_derived_exception(compiler_bayes_exception,compiler_exception);
+create_derived_exception(compiler_manager_exception,compiler_exception);
+create_derived_exception(compiler_io_exception,compiler_exception);
+create_derived_exception(compiler_parse_exception,compiler_exception);
+create_derived_exception(overflow_exception,compiler_exception);
+
+#endif

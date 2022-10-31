@@ -1,0 +1,5 @@
+load net /home/gdal/trunk/wmc/data/net/asia.net
+load map /home/gdal/trunk/wmc/test/output/asia.map
+load mg /home/gdal/trunk/wmc/test/output/asia.mc.ac
+initdlib
+verify

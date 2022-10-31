@@ -1,0 +1,24 @@
+[submodule "src/exception"]
+	path = src/exception
+    url = github:gisodal/exception
+[submodule "src/quine-mccluskey"]
+	path = src/quine-mccluskey
+    url = github:gisodal/quine-mccluskey
+[submodule "src/bn-to-cnf"]
+	path = src/bn-to-cnf
+    url = github:gisodal/bn-to-cnf
+[submodule "src/bnc"]
+	path = src/bnc
+    url = github:gisodal/bnc
+[submodule "src/bnmc"]
+	path = src/bnmc
+    url = github:gisodal/bnmc
+[submodule "src/bddc"]
+	path = src/bddc
+    url = github:gisodal/bddc.git
+[submodule "src/pseudotree"]
+	path = src/pseudotree
+	url = git@github.com:gisodal/daoopt.git
+[submodule "src/dlib"]
+	path = src/dlib
+	url = git@github.com:gisodal/dlib.git

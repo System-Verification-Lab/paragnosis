@@ -1,0 +1,16 @@
+#!/bin/bash
+
+FILE=$1
+NAME=${FILE%.*}
+EXTENSION=${FILE##*.}
+EXPORT=eps
+
+if [ "$EXTENSION" == "dot" ]; then
+    dot -T$EXPORT $FILE -o ${NAME}.$EXPORT
+    if [ $# -gt 1 ]; then
+        evince "${NAME}.${EXPORT}" 2>/dev/null &
+    fi
+else
+    echo "Usage: ./dot2ps <DOT FILE>" 1>&2
+fi
+

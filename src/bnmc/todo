@@ -1,0 +1,27 @@
+* partition connection caching
+    * determine partition ordering
+        - upperbound
+
+    * dynamic ordering
+        - upperbound
+        - d-separation
+        - decendent independence
+    * static ordering
+        - upperbound
+        - d-separation
+        - decendent independence
+        - equivalence after conditioning
+
+* traversal optimization
+    * local
+        - pick new root within and leaf
+            - d-separation
+            - decendent independence
+            - uninitialized subfunctions return 1, at root of each BN variable
+                - summing over all variable values adds to 1
+                - requires non-interleaved ordering
+
+    * global
+        - only applicable to partitions
+        - see optimization for partition caching
+
