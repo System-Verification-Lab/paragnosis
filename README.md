@@ -1,1 +1,1 @@
-# paragnosis
+# ParaGnosis
