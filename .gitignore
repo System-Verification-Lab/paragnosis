@@ -27,7 +27,7 @@ obj
 lib*
 /include
 core*
-
+debug
 
 # aux files   #
 ###############
