@@ -13,7 +13,6 @@ from threading import Timer
 import time
 import traceback
 import paragnosis.misc as misc
-import paragnosis.globals as g
 
 from time import sleep
 def signal_handler(signal, frame):

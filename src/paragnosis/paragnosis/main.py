@@ -15,7 +15,7 @@ import collections.abc
 
 def process(settings):
     if settings.list == True:
-        list_bayesian_networks()
+        list_bayesian_networks(settings)
         sys.exit(0)
     else:
         if settings.test != None:

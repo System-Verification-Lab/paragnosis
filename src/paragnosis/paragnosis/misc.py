@@ -6,7 +6,6 @@ import fcntl
 import subprocess
 import glob
 import os
-import paragnosis.globals as g
 import sys
 from time import sleep
 import re
@@ -33,15 +32,16 @@ def print_list(lst):
         print("".join([column_format.format(entry) for entry in lst[offset::rows]]))
 
 
-def list_bayesian_networks():
-    bns_glob = glob.glob(os.path.join(g.NET_DIR,"*.net"), recursive=False)
-    bns = [ os.path.splitext(os.path.basename(bn))[0] for bn in bns_glob ]
-    bns = sorted(bns, key=str.lower)
+def list_bayesian_networks(settings):
+    net_dir  = os.path.join(settings.location, "data", "net")
+    bns_glob = glob.glob(os.path.join(net_dir, "*.net"), recursive=False)
+    bns      = [ os.path.splitext(os.path.basename(bn))[0] for bn in bns_glob ]
+    bns      = sorted(bns, key=str.lower)
 
     if len(bns) > 0:
         print_list(bns)
     else:
-        print("No Bayesian networks found in '{}'".format(g.NET_DIR))
+        print("No Bayesian networks found in '{}'".format(net_dir))
 
 def execute_find(cmd, infile, expressions, timeout,verbose):
     if verbose:

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import paragnosis.misc as misc
-import paragnosis.globals as g
 from paragnosis.bdd import *
 
 def compare_inference(settings):
