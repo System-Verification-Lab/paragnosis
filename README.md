@@ -6,4 +6,9 @@ Install requirements with `apt`:
 
     > sudo apt-get install libboost-all-dev python3 python-setuptools make cmake gcc g++ libgmp-dev libgsl-dev libreadline-dev
 
+To build, type:
+
+    > make
+
+Binaries will be installed in the '<path/to/source>/bin' folder.
 
