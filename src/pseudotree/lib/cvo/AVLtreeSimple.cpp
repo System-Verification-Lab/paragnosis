@@ -1668,7 +1668,7 @@ backtrack_10_11_95 :
 		}
 
 	// ok, cannot go left. see if we can go right.
-	if (Left <= 0 && m_db_tree[j].m_RC > 0) {
+	if (*Left <= 0 && m_db_tree[j].m_RC > 0) {
 		Left[i] = 1 ;
 		Middle[++i] = j = m_db_tree[j].m_RC ;
 		Left[i] = -1 ;

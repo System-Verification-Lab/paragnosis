@@ -9,13 +9,6 @@ project(${PROJECT} C CXX)
 
 # set compiler flags
 get_filename_component(WMC "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
-set(ACE "${WMC}/usr/bin/ace")
-
-if(NOT EXISTS "${ACE}")
-    message(FATAL_ERROR "Ace is not located at '${ACE}'")
-endif()
-
-add_definitions(-DACE='${ACE}')
 
 message(STATUS "Build type: '${CMAKE_BUILD_TYPE}'")
 set(CMAKE_OPTIMIZATION "-O3")

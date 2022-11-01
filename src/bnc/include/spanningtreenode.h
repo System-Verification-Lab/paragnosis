@@ -7,6 +7,7 @@
 #include "xary.h"
 #include <cstdint>
 #include <cassert>
+#include <limits>
 
 namespace bnc {
 
