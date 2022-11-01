@@ -106,6 +106,10 @@ def main():
     settings.update(defaults)
     settings.from_rc()
     settings.update(to_dict(options))
+
+    if not settings.has('location'):
+        sys.stderr.write("FATAL: please define the 'location' variable in your ~/.paragnosisrc\n")
+        sys.exit(1)
      
     process(settings)
 
