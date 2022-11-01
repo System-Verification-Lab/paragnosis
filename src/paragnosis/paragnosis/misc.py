@@ -6,7 +6,7 @@ import fcntl
 import subprocess
 import glob
 import os
-import test.globals as g
+import paragnosis.globals as g
 import sys
 from time import sleep
 import re

@@ -3,23 +3,57 @@
 
 import argparse
 import sys
-from test.misc import *
-from test.bdd import *
-from test.experiments import *
-import multiprocessing
 
-def process(options):
-    if options.list == True:
+from sympy import O
+from paragnosis.misc import *
+from paragnosis.bdd import *
+from paragnosis.experiments import *
+import multiprocessing
+from .defaults import defaults
+from .settings import Settings
+import collections.abc
+
+def process(settings):
+    if settings.list == True:
         list_bayesian_networks()
         sys.exit(0)
     else:
-        if options.test != None:
-            if options.test == "inference":
-                compare_inference(options)
-            elif options.test == "compilation":
-                compare_compilation(options)
+        if settings.test != None:
+            if settings.test == "inference":
+                compare_inference(settings)
+            elif settings.test == "compilation":
+                compare_compilation(settings)
             else:
-                compare_encoding(options)
+                compare_encoding(settings)
+
+
+def entry_to_dict(key, value) -> dict:
+    dest = key.split('.',1)
+    if len(dest) == 2:
+        return { dest[0]: entry_to_dict(dest[1], value) }
+    else:
+        return { key: value }
+
+def update(d: dict, mapping) -> dict:
+    for key, value in mapping.items():
+        if isinstance(value, collections.abc.Mapping):
+            dd = d.get(key, {})
+            if not isinstance(dd, dict):
+                dd = {}
+
+            d[key] = update(dd, value)
+        else:
+            d[key] = value
+
+    return d
+
+def to_dict(parsed):
+    dictionary = {}
+    for key, value in vars(parsed).items():
+        entry = entry_to_dict(key,value)
+        update(dictionary,entry)
+
+    return dictionary
 
 
 def main():
@@ -67,7 +101,13 @@ def main():
         if not options.help and (options.networks == None):
             parser.error('{} requires --network'.format(options.test))
 
-    process(options)
+    # get all settings
+    settings = Settings()
+    settings.update(defaults)
+    settings.from_rc()
+    settings.update(to_dict(options))
+     
+    process(settings)
 
 #if __name__ == "__main__":
 #   main(sys.argv[1:])

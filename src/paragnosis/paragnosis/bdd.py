@@ -12,8 +12,8 @@ import mmap
 from threading import Timer
 import time
 import traceback
-import test.misc as misc
-import test.globals as g
+import paragnosis.misc as misc
+import paragnosis.globals as g
 
 from time import sleep
 def signal_handler(signal, frame):
@@ -27,7 +27,8 @@ MAX_CORES = multiprocessing.cpu_count()
 CORES = [2**exp for exp in range(0,10) if 2**exp <= MAX_CORES]
 
 class Bdd:
-    def __init__(this):
+    def __init__(this, settings):
+        this.settings = settings
         this.compile_result = []
         this.inference_result = []
         this.repeat = 3
@@ -37,12 +38,12 @@ class Bdd:
         this.verify = False
         this.comparelimit = -1
         this.verbose = False
-        this.ace       = os.path.join(g.WMC_DIR,"usr/bin/ace")
-        this.compiler  = os.path.join(g.WMC_DIR,"bin/bnc")
-        this.inference = os.path.join(g.WMC_DIR,"bin/bnmc")
-        this.encoder   = os.path.join(g.WMC_DIR,"bin/bn-to-cnf")
+        this.ace       = os.path.join(settings.location,"usr/bin/ace")
+        this.compiler  = os.path.join(settings.location,"bin/bnc")
+        this.inference = os.path.join(settings.location,"bin/bnmc")
+        this.encoder   = os.path.join(settings.location,"bin/bn-to-cnf")
         this.timeout = None
-        this.dir = os.path.join(g.SCRIPT_DIR,"output")
+        this.dir = os.path.join(os.getcwd(),"output")
         if not os.path.exists(this.dir):
             os.makedirs(this.dir)
 
@@ -103,7 +104,7 @@ class Bdd:
         if not os.path.exists(hugin):
             net,ext = os.path.splitext(hugin)
             net = os.path.basename(net)
-            nhugin = os.path.join(g.NET_DIR,"{}.net".format(net))
+            nhugin = os.path.join(this.settings.location,"data", "{}.net".format(net))
             if not os.path.exists(nhugin):
                 sys.stderr.write("Bayesian network '" + nhugin + "' not found")
                 sys.exit(1)
