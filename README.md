@@ -4,7 +4,7 @@
 
 Install requirements with `apt`: 
 
-    > sudo apt-get install libboost-all-dev python3 python-setuptools make cmake gcc g++ libgmp-dev libgsl-dev libreadline-dev
+    > sudo apt-get install libboost-all-dev python4 python-setuptools make cmake gcc g++ libgmp-dev libgsl-dev libreadline-dev make cmake
 
 To build, type:
 
