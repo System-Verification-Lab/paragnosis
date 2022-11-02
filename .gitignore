@@ -28,6 +28,7 @@ lib*
 /include
 core*
 debug
+release
 
 # aux files   #
 ###############

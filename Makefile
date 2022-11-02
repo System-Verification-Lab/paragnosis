@@ -13,10 +13,16 @@ export CMAKE_C_FLAGS += -fdiagnostics-color=auto
 
 MAKEFLAGS += --no-print-directory
 
-.PHONY: build debug release clean help
+.PHONY: build debug release clean help paragnosis
+
+all: release paragnosis
+
+paragnosis:
+	@cd src/paragnosis && sudo python3 setup.py install
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
 	@$(MAKE) -C $(DEFAULTBUILDDIR) install
+
 
 release: CMAKEFLAGS += -DCMAKE_BUILD_TYPE=Release
 release: $(RELEASEBUILDDIR)/CMakeCache.txt
