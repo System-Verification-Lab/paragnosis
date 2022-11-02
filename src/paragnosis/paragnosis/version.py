@@ -3,7 +3,7 @@
 
 major = 1
 minor = 0
-micro = 1
+micro = 3
 
 version = "{0}.{1}.{2}".format(major,minor,micro)
 

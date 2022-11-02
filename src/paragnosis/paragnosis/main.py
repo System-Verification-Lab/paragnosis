@@ -11,6 +11,7 @@ from paragnosis.experiments import *
 import multiprocessing
 from .defaults import defaults
 from .settings import Settings
+from .version import version
 import collections.abc
 
 def process(settings):
@@ -63,6 +64,7 @@ def main():
     parser = argparse.ArgumentParser(description='WMC testing suite',add_help=False)
 
     parser.add_argument('--help',action='help',help='Show this help message and exit')
+    parser.add_argument('--version',dest='version',action='store_true',help='Show the version')
     parser.add_argument('--list', dest='list', action='store_true', help='Print list of available Bayesian networks', required=False)
     parser.add_argument('--cores', dest='cores', nargs='+', help='Number of cores to use during parallel execution', required=False, default=CORES,metavar="#CORES",type=int)
     test_options = ["compilation","inference","encoding"]
@@ -93,6 +95,10 @@ def main():
 
     options = parser.parse_args()
 
+    if options.version:
+        print("Version {}".format(version))
+        sys.exit(0)
+
     if options.test == 'compilation' or options.test == 'inference':
         if options.networks == None or options.bdds == None:
             parser.error('{} requires --network and --bdd'.format(options.test))
@@ -110,7 +116,7 @@ def main():
     if not settings.has('location'):
         sys.stderr.write("FATAL: please define the 'location' variable in your ~/.paragnosisrc\n")
         sys.exit(1)
-     
+
     process(settings)
 
 #if __name__ == "__main__":

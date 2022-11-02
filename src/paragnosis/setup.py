@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
-from paragnosis import version
+from paragnosis.version import version
 
 setup(
     name='ParaGnosis',

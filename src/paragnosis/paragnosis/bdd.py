@@ -103,7 +103,7 @@ class Bdd:
         if not os.path.exists(hugin):
             net,ext = os.path.splitext(hugin)
             net = os.path.basename(net)
-            nhugin = os.path.join(this.settings.location,"data", "{}.net".format(net))
+            nhugin = os.path.join(this.settings.location,"data", "net", "{}.net".format(net))
             if not os.path.exists(nhugin):
                 sys.stderr.write("Bayesian network '" + nhugin + "' not found")
                 sys.exit(1)
@@ -158,7 +158,7 @@ class Bdd:
             f.write("ace\n");
 
         if this.evidence:
-            if len(bdds) != 1: 
+            if len(bdds) != 1:
                 print('Computation of posteriors only allows specification of 1 bdd at a time')
                 sys.exit(1)
 
