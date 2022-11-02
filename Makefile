@@ -13,7 +13,7 @@ export CMAKE_C_FLAGS += -fdiagnostics-color=auto
 
 MAKEFLAGS += --no-print-directory
 
-.PHONY: build debug release clean help paragnosis
+.PHONY: build debug release clean help paragnosis all
 
 all: release paragnosis
 
