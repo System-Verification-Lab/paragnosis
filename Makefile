@@ -15,22 +15,22 @@ MAKEFLAGS += --no-print-directory
 
 .PHONY: build debug release clean help paragnosis all
 
-all: release paragnosis
+all: release
+	@$(MAKE) paragnosis
 
 paragnosis:
 	@cd src/paragnosis && sudo python3 setup.py install
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
-	@$(MAKE) -C $(DEFAULTBUILDDIR) install
-
+	@$(MAKE) -Wno-dev -C $(DEFAULTBUILDDIR) install
 
 release: CMAKEFLAGS += -DCMAKE_BUILD_TYPE=Release
 release: $(RELEASEBUILDDIR)/CMakeCache.txt
-	@$(MAKE) -C $(RELEASEBUILDDIR) install
+	@$(MAKE) -Wno-dev -C $(RELEASEBUILDDIR) install
 
 debug: CMAKEFLAGS += -DCMAKE_BUILD_TYPE=Debug
 debug: $(DEBUGBUILDDIR)/CMakeCache.txt
-	@$(MAKE) -C $(DEBUGBUILDDIR) install
+	@$(MAKE) -Wno-dev -C $(DEBUGBUILDDIR) install
 
 %/CMakeCache.txt:
 	@mkdir -p $*

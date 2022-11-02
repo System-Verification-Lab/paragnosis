@@ -11,7 +11,7 @@ setup(
     description='A tool for Weigted model counting.',
     keywords='ParaGnosis',
     packages=['paragnosis'],
-    scripts = ['bin/paragnosis'],
+    scripts = ['bin/pg'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Topic :: Software Development',
