@@ -19,7 +19,7 @@ all: release
 	@$(MAKE) paragnosis
 
 paragnosis:
-	@cd src/paragnosis && sudo python3 setup.py install
+	@cd src/paragnosis && sudo pip3 install .
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
 	@$(MAKE) -Wno-dev -C $(DEFAULTBUILDDIR) install

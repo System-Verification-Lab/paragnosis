@@ -6,6 +6,10 @@ Install requirements with `apt`:
 
     > sudo apt-get install libboost-all-dev python3 python-setuptools make cmake gcc g++ libgmp-dev libgsl-dev libreadline-dev make cmake
 
+Install latest pip:
+
+    > sudo python3 -m pip install --upgrade pip
+
 To build, type:
 
     > make
