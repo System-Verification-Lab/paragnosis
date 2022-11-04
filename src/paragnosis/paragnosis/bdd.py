@@ -105,7 +105,7 @@ class Bdd:
             net = os.path.basename(net)
             nhugin = os.path.join(this.settings.location,"data", "net", "{}.net".format(net))
             if not os.path.exists(nhugin):
-                sys.stderr.write("Bayesian network '" + nhugin + "' not found")
+                sys.stderr.write("Bayesian network '" + hugin + "' not found. Type pg --list to show available networks.\n")
                 sys.exit(1)
             else:
                 hugin = nhugin
