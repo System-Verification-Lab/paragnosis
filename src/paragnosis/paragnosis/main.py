@@ -78,8 +78,8 @@ def main():
     group.add_argument('--overwrite',dest='overwrite',action='store_true', help='Overwrite ordering, partitioning, etc.')
     group.add_argument('--verify', dest='verify', action='store_true', help='Verify inference answers', required=False)
     group.add_argument('--compare', dest='compare', type=str, nargs='?', metavar="#OBSERVED", help='Limit number of observerd variables during inference', required=False, const="", default="")
-    group.add_argument('--evidence',dest='evidence', type=str, help='Provide evidence in the form \'var=value[, var2=value2][, var3=value3]\'', required=False, metavar='#EVIDENCE')
-    group.add_argument('--posteriors',dest='posteriors', type=str, help='Provide variables in the form \'var[, var2][, var3]\'', nargs='?', required=False, metavar='#VARIABLES')
+    group.add_argument('--evidence',dest='evidence', type=str, help='Provide evidence in the form \'var=value[, var2=value2][, var3=value3]\'', default=None, required=False, metavar='#EVIDENCE')
+    group.add_argument('--posteriors',dest='posteriors', type=str, help='Provide variables in the form \'var[, var2][, var3]\'', nargs='?', default=None, required=False, metavar='#VARIABLES')
     group.add_argument('--cases',dest='cases', type=str, help='Provide a file with inference test cases\'', required=False, metavar='#FILE')
 
     group.add_argument('--verbose', dest='verbose', action='store_true', help=argparse.SUPPRESS, required=False)
@@ -111,7 +111,7 @@ def main():
     settings = Settings()
     settings.update(defaults)
     settings.from_rc()
-    settings.update(to_dict(options))
+    settings.update(options.__dict__)
 
     if not settings.has('location'):
         sys.stderr.write("FATAL: please define the 'location' variable in your ~/.paragnosisrc\n")

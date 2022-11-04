@@ -130,7 +130,7 @@ class Settings():
                 if not isinstance(settings, Settings):
                     settings = Settings()
                 self.__dict__[key] = settings.update(value)
-            elif value != None:
+            else:
                 self.__dict__[key] = value
 
         return self

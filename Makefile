@@ -20,6 +20,7 @@ all: release
 
 paragnosis:
 	@cd src/paragnosis && sudo pip3 install .
+	cp src/paragnosis/bin/pg bin
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
 	@$(MAKE) -Wno-dev -C $(DEFAULTBUILDDIR) install
@@ -34,7 +35,7 @@ debug: $(DEBUGBUILDDIR)/CMakeCache.txt
 
 %/CMakeCache.txt:
 	@mkdir -p $*
-	@cd $* && cmake $(CMAKEFLAGS) $(SOURCEDIR)
+	@cd $* && cmake -Wno-dev $(CMAKEFLAGS) $(SOURCEDIR)
 
 clean:
 	@rm -rf $(DEBUGBUILDDIR) $(DEFAULTBUILDDIR) $(RELEASEBUILDDIR)
