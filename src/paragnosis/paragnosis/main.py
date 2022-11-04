@@ -12,111 +12,98 @@ import multiprocessing
 from .defaults import defaults
 from .settings import Settings
 from .version import version
-import collections.abc
 
 def process(settings):
-    if settings.list == True:
+
+
+    # print settings
+    if settings.debug:
+        settings.print()
+
+    if not settings.has('location'):
+        sys.stderr.write("FATAL: location of ParaGnosis toolset unknown. Please use --source to specify it or define the 'location' variable in your ~/.paragnosisrc.\n")
+        sys.exit(1)
+    elif settings.list:
         list_bayesian_networks(settings)
         sys.exit(0)
+    elif settings.version:
+        print("Version {}".format(version))
+        sys.exit(0)
+    elif settings.command == None:
+        settings.print_help()
+        sys.exit(1)
     else:
-        if settings.test != None:
-            if settings.test == "inference":
-                compare_inference(settings)
-            elif settings.test == "compilation":
-                compare_compilation(settings)
-            else:
-                compare_encoding(settings)
-
-
-def entry_to_dict(key, value) -> dict:
-    dest = key.split('.',1)
-    if len(dest) == 2:
-        return { dest[0]: entry_to_dict(dest[1], value) }
-    else:
-        return { key: value }
-
-def update(d: dict, mapping) -> dict:
-    for key, value in mapping.items():
-        if isinstance(value, collections.abc.Mapping):
-            dd = d.get(key, {})
-            if not isinstance(dd, dict):
-                dd = {}
-
-            d[key] = update(dd, value)
+        if settings.command == "inference":
+            compare_inference(settings)
+        elif settings.command == "encode":
+            compare_encoding(settings)
         else:
-            d[key] = value
-
-    return d
-
-def to_dict(parsed):
-    dictionary = {}
-    for key, value in vars(parsed).items():
-        entry = entry_to_dict(key,value)
-        update(dictionary,entry)
-
-    return dictionary
+            compare_compilation(settings)
 
 
 def main():
     MAX_CORES = multiprocessing.cpu_count()
-    CORES = [2**exp for exp in range(0,10) if 2**exp <= MAX_CORES]
+    CORES     = [2**exp for exp in range(0,10) if 2**exp <= MAX_CORES]
+
+    # load the settings from default and from
+    settings = Settings()
+    settings.update(defaults)
+    settings.from_rc()
+
+    settings.print()
 
     parser = argparse.ArgumentParser(description='WMC testing suite',add_help=False)
 
-    parser.add_argument('--help',action='help',help='Show this help message and exit')
-    parser.add_argument('--version',dest='version',action='store_true',help='Show the version')
-    parser.add_argument('--list', dest='list', action='store_true', help='Print list of available Bayesian networks', required=False)
-    parser.add_argument('--cores', dest='cores', nargs='+', help='Number of cores to use during parallel execution', required=False, default=CORES,metavar="#CORES",type=int)
-    test_options = ["compilation","inference","encoding"]
-    parser.add_argument('--test',dest='test',choices=test_options, help='Choose what to test. Options are ' + ', '.join(test_options), required=False,metavar='TEST')
-    parser.add_argument('--network',dest='networks',nargs='+', help='Bayesian network(s) used for testing',metavar="#NETWORK")
+    parser.add_argument('--help',       action='help',                             help='Show this help message and exit')
+    parser.add_argument('--version',    action='store_true',                       help='Print version and exit')
+    parser.add_argument('--dry-run',    action='store_true',                       help='Print the commands instead of running them')
+    parser.add_argument('--debug',      action='store_true',                       help='Print debug info')
+    parser.add_argument('--list',       action='store_true',                       help='Print list of available Bayesian networks')
+    parser.add_argument('--output-dir', dest='output_dir',   metavar="#DIRECTORY", help='Set the output directory (current: {})'.format(settings.output_dir), type=str)
+    parser.add_argument('--source',     dest='location',     metavar="#DIRECTORY", help='Set the source directory of the Paragnosis toolset (current: {})'.format(settings.get("location", "unknown")), type=str, default=settings.get("location"))
 
-    bdd_options = ["wpbdd","parallel-wpbdd","pwpbdd","parallel-pwpbdd","sdd","sddr","obdd","zbdd","lazy","shafershanoy","ve","dlib","ace","acei","mg","tdmg"]
-    group = parser.add_argument_group('inference and compilation arguments')
-    group.add_argument('--bdd',dest='bdds',nargs='+', help='Type of BDD. Options are ' + ', '.join(bdd_options), choices=bdd_options,required=False,default=None,metavar='BDD')
-    group.add_argument('--partitions',dest='partitions',help='Set number of partitions',default=2,type=int,metavar='#PARTITIONS')
-    group.add_argument('--overwrite',dest='overwrite',action='store_true', help='Overwrite ordering, partitioning, etc.')
-    group.add_argument('--verify', dest='verify', action='store_true', help='Verify inference answers', required=False)
-    group.add_argument('--compare', dest='compare', type=str, nargs='?', metavar="#OBSERVED", help='Limit number of observerd variables during inference', required=False, const="", default="")
-    group.add_argument('--evidence',dest='evidence', type=str, help='Provide evidence in the form \'var=value[, var2=value2][, var3=value3]\'', default=None, required=False, metavar='#EVIDENCE')
-    group.add_argument('--posteriors',dest='posteriors', type=str, help='Provide variables in the form \'var[, var2][, var3]\'', nargs='?', default=None, required=False, metavar='#VARIABLES')
-    group.add_argument('--cases',dest='cases', type=str, help='Provide a file with inference test cases\'', required=False, metavar='#FILE')
+    bdd_options = ["wpbdd","parallel-wpbdd","pwpbdd","parallel-pwpbdd","mg","tdmg"]
+    bdd_default = ["tdmg"]
 
-    group.add_argument('--verbose', dest='verbose', action='store_true', help=argparse.SUPPRESS, required=False)
-    group.add_argument('--repeat',dest='repeat',help='Set number of compilation repeats',default=3,type=int, required=False)
+    subparsers = parser.add_subparsers(dest='command')
 
-    group = parser.add_argument_group('encoding arguments')
-    group.add_argument('--encoding-help',dest='help',action='store_true',help='Show help for encoding')
-    group.add_argument('--args',dest='args',nargs=argparse.REMAINDER,help="Encoding arguments",metavar='ARG')
+    # encoding parser
+    encoding = subparsers.add_parser('encoding', help='Create Bayesian network encodings')
+    encoding.add_argument(dest='network', type=str,  metavar="NETWORK", help="Provide a hugin file or a Bayesian network name provided by ./pg --list")
+    encoding.add_argument('--encoding-help',dest='help',action='store_true',help='Show help for encoding')
+    encoding.add_argument('--args',dest='args',nargs=argparse.REMAINDER,help="Encoding arguments",metavar='ARG')
+
+    # compilation parser
+    compilation = subparsers.add_parser('compile', help='Compile Bayesian networks')
+    compilation.add_argument(                dest='network',                                         metavar="NETWORK",     type=str,             help="Provide a hugin file or a Bayesian network name provided by ./pg --list")
+    compilation.add_argument('--cores',      dest='cores',      required=False, default=CORES,       metavar="#CORES",      type=int,  nargs='+', help='Number of cores to use during parallel execution', )
+    compilation.add_argument('--method',     dest='bdds',       required=False, default=bdd_default, metavar='BDD',         nargs='+',            help='Type of BDD. Options are ' + ', '.join(bdd_options), choices=bdd_options)
+    compilation.add_argument('--partitions', dest='partitions', required=False, default=2,           metavar='#PARTITIONS', type=int,             help='Set number of partitions')
+    compilation.add_argument('--overwrite',  dest='overwrite',  required=False,                                             action='store_true',  help='Overwrite ordering, partitioning, etc.')
+    compilation.add_argument('--repeat',     dest='repeat',     required=False, default=1,                                  type=int,             help='Set number of compilation repeats')
+
+    # inference parser
+    inference = subparsers.add_parser('inference', help='Perform inference')
+    inference.add_argument(                dest='network',                                         type=str,  metavar="NETWORK",               help="Provide a hugin file or a Bayesian network name provided by ./pg --list")
+    inference.add_argument('--evidence',   dest='evidence',   required=False, default=None,        type=str,  metavar='#EVIDENCE',             help='Provide evidence in the form \'var=value[, var2=value2][, var3=value3]\'')
+    inference.add_argument('--posteriors', dest='posteriors', required=False, default=None,        type=str,  metavar='#VARIABLES',            help='Provide variables in the form \'var[, var2][, var3]\'', nargs='?')
+    inference.add_argument('--verify',     dest='verify',     required=False,                                 action='store_true',             help='Verify inference answers')
+    inference.add_argument('--compare',    dest='compare',    required=False, default="",          type=str,  metavar="#OBSERVED",  nargs='?', help='Limit number of observerd variables during inference', const="")
+    inference.add_argument('--cases',      dest='cases',      required=False,                      type=str,  metavar='#FILE',                 help='Provide a file with inference test cases\'')
+    inference.add_argument('--method',     dest='bdds',       required=False, default=bdd_default,            metavar='BDD',        nargs='+', help='Type of BDD. Options are ' + ', '.join(bdd_options), choices=bdd_options)
 
     if len(sys.argv)==1:
         parser.print_help()
         sys.exit(0)
 
+    # parse provided args
     options = parser.parse_args()
 
-    if options.version:
-        print("Version {}".format(version))
-        sys.exit(0)
-
-    if options.test == 'compilation' or options.test == 'inference':
-        if options.networks == None or options.bdds == None:
-            parser.error('{} requires --network and --bdd'.format(options.test))
-
-    if options.test == 'encoding':
-        if not options.help and (options.networks == None):
-            parser.error('{} requires --network'.format(options.test))
-
-    # get all settings
-    settings = Settings()
-    settings.update(defaults)
-    settings.from_rc()
+    # update the settings
     settings.update(options.__dict__)
+    settings.print_help = lambda : parser.print_help()
 
-    if not settings.has('location'):
-        sys.stderr.write("FATAL: please define the 'location' variable in your ~/.paragnosisrc\n")
-        sys.exit(1)
-
+    # handle provided input
     process(settings)
 
 #if __name__ == "__main__":

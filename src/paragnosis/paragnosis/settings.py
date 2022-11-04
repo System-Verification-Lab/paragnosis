@@ -76,10 +76,13 @@ class Settings():
 
         self.update(to_dictionary(attributes))
 
-    def get(self, path: str):
+    def get(self, path: str, dflt = None):
         attributes = path.split(".")
         res = self.__resolve(attributes, [])
-        return res
+        if res == None:
+            return dflt
+        else:
+            return res
 
     def to(self, path: str):
         value = self.get(path)
@@ -130,6 +133,8 @@ class Settings():
                 if not isinstance(settings, Settings):
                     settings = Settings()
                 self.__dict__[key] = settings.update(value)
+            elif key in self.__dict__ and value == None:
+                pass
             else:
                 self.__dict__[key] = value
 
