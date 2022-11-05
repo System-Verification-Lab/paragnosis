@@ -16,10 +16,10 @@ MAKEFLAGS += --no-print-directory
 .PHONY: build debug release clean help paragnosis all
 
 all: release
-	@$(MAKE) paragnosis
+	@$(MAKE) pg
 
-paragnosis:
-	@cd src/paragnosis && sudo pip3 install .
+pg:
+	@cd src/paragnosis && pip3 install .
 	cp src/paragnosis/bin/pg bin
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
@@ -39,6 +39,7 @@ debug: $(DEBUGBUILDDIR)/CMakeCache.txt
 
 clean:
 	@rm -rf $(DEBUGBUILDDIR) $(DEFAULTBUILDDIR) $(RELEASEBUILDDIR)
+	@cd src/paragnosis && rm -rf *.egg-info build dist
 
 help:
 	@echo "Usage:"
