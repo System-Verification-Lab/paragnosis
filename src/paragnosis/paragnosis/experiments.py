@@ -3,10 +3,9 @@
 import paragnosis.misc as misc
 from paragnosis.bdd import *
 
-def compare_inference(settings):
+def run_inference(settings):
     bdd = Bdd(settings)
     bdd.set_cores(settings.cores)
-    bdd.set_overwrite(settings.overwrite)
     bdd.set_verify(settings.verify)
     bdd.set_compare(settings.compare.split(','))
     bdd.set_evidence(settings.evidence)
@@ -21,7 +20,7 @@ def compare_inference(settings):
         bdd.print_inference_results()
 
 
-def compare_compilation(settings):
+def run_compilation(settings):
     bdd = Bdd(settings)
     bdd.set_cores(settings.cores)
     bdd.set_overwrite(settings.overwrite)
@@ -32,7 +31,7 @@ def compare_compilation(settings):
     bdd.run_compilation(settings.bdds)
     bdd.print_compilation_results()
 
-def compare_encoding(settings):
+def run_encoding(settings):
     if settings.help:
         bdd = Bdd()
         bdd.help_encoding()

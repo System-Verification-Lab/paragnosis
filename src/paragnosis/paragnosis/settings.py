@@ -152,7 +152,7 @@ class Settings():
         # set the config file and locations
         platform = util.get_platform()
         if platform == "windows":
-            self.config_filename = "paragnosis.ini"
+            self.config_filename = "pg.ini"
             try:
                 windir = os.path.join(os.environ['APPDATA'],'paragnosis')
                 if not os.path.exists(windir):
@@ -162,7 +162,7 @@ class Settings():
                 eprint("Could not set windows config dir to %APPDATA%/paragnosis.")
                 self.config_dirs = [ ]
         else:
-            self.config_filename = ".paragnosisrc"
+            self.config_filename = ".pgrc"
             self.config_dirs = [ os.path.expanduser('~') ]
 
         if self.has('config_dir'):
