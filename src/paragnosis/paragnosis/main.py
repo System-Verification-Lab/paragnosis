@@ -45,13 +45,13 @@ def cli():
 
     parser = argparse.ArgumentParser(description='WMC testing suite',add_help=False)
 
-    parser.add_argument('--help',       action='help',                             help='Show this help message and exit')
-    parser.add_argument('--version',    action='store_true',                       help='Print version and exit')
-    parser.add_argument('--dry-run',    action='store_true',                       help='Print the commands instead of running them')
-    parser.add_argument('--debug',      dest='verbose',      action='store_true',  help='Print debug info')
-    parser.add_argument('--list',       action='store_true',                       help='Print list of available Bayesian networks')
-    parser.add_argument('--output-dir', dest='output_dir',   metavar="#DIRECTORY", help='Set the output directory (current: {})'.format(settings.output_dir), type=str)
-    parser.add_argument('--source',     dest='location',     metavar="#DIRECTORY", help='Set the source directory of the Paragnosis toolset (current: {})'.format(settings.get("location", "unknown")), type=str, default=settings.get("location"))
+    parser.add_argument('--help', '-h',    action='help',                             help='Show this help message and exit')
+    parser.add_argument('--version',       action='store_true',                       help='Print version and exit')
+    #parser.add_argument('--dry-run',    action='store_true',                       help='Print the commands instead of running them')
+    parser.add_argument('--verbose', '-v', dest='verbose',      action='store_true',  help='Print debug info')
+    parser.add_argument('--list',          action='store_true',                       help='Print list of available Bayesian networks')
+    parser.add_argument('--output-dir',    dest='output_dir',   metavar="#DIRECTORY", help='Set the output directory (current: {})'.format(settings.output_dir), type=str)
+    parser.add_argument('--source',        dest='location',     metavar="#DIRECTORY", help='Set the source directory of the Paragnosis toolset (current: {})'.format(settings.get("location", "unknown")), type=str, default=settings.get("location"))
 
     bdd_options = ["wpbdd","mg","tdmg"] # "parallel-wpbdd","pwpbdd","parallel-pwpbdd",
     bdd_default = ["tdmg"]
