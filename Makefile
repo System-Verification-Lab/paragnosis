@@ -19,7 +19,7 @@ all: release
 	@$(MAKE) pg
 
 pg:
-	@cd src/paragnosis && pip3 install .
+	@cd src/paragnosis && sudo pip3 install .
 	cp src/paragnosis/bin/pg bin
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
