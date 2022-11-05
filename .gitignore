@@ -33,6 +33,7 @@ release
 # aux files   #
 ###############
 
+.pg.output
 *.dot
 *.map
 *.net.lmap

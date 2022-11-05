@@ -53,7 +53,7 @@ def cli():
     parser.add_argument('--output-dir', dest='output_dir',   metavar="#DIRECTORY", help='Set the output directory (current: {})'.format(settings.output_dir), type=str)
     parser.add_argument('--source',     dest='location',     metavar="#DIRECTORY", help='Set the source directory of the Paragnosis toolset (current: {})'.format(settings.get("location", "unknown")), type=str, default=settings.get("location"))
 
-    bdd_options = ["wpbdd","parallel-wpbdd","pwpbdd","parallel-pwpbdd","mg","tdmg"]
+    bdd_options = ["wpbdd","mg","tdmg"] # "parallel-wpbdd","pwpbdd","parallel-pwpbdd",
     bdd_default = ["tdmg"]
 
     subparsers = parser.add_subparsers(dest='command')
@@ -81,8 +81,8 @@ def cli():
     inference.add_argument('--verify',     dest='verify',     required=False,                                 action='store_true',              help='Verify inference answers')
     inference.add_argument('--compare',    dest='compare',    required=False, default="",          type=str,  metavar="#NROBSERVED", nargs='?', help='Limit number of observerd variables during inference', const="")
     inference.add_argument('--cases',      dest='cases',      required=False,                      type=str,  metavar='#FILE',                  help='Provide a file with inference test cases\'')
-    inference.add_argument('--method',     dest='bdds',       required=False, default=bdd_default,            metavar='BDD',        nargs='+',  help='Type of BDD. Options are ' + ', '.join(bdd_options), choices=bdd_options)
-    inference.add_argument('--cores',      dest='cores',      required=False,                      metavar="#CORES",      type=int,  nargs='+', help='Number of cores to use during parallel execution', )
+    inference.add_argument('--method',     dest='bdds',       required=False, default=bdd_default,            metavar='BDD',         nargs='+', help='Type of BDD. Options are ' + ', '.join(bdd_options), choices=bdd_options)
+    inference.add_argument('--cores',      dest='cores',      required=False,                      type=int,  metavar="#CORES",      nargs='+', help='Number of cores to use during parallel execution', )
 
     if len(sys.argv)==1:
         parser.print_help()
