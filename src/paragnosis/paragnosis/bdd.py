@@ -41,8 +41,8 @@ class Bdd:
         this.compiler  = os.path.join(settings.location,"bin/bnc")
         this.inference = os.path.join(settings.location,"bin/bnmc")
         this.encoder   = os.path.join(settings.location,"bin/bn-to-cnf")
-        this.timeout = None
-        this.dir = os.path.join(os.getcwd(),"output")
+        this.timeout   = None
+        this.dir       = settings.output_dir
         if not os.path.exists(this.dir):
             os.makedirs(this.dir)
 
@@ -100,10 +100,12 @@ class Bdd:
             return 0
 
     def set_bayesian_network(this,hugin):
+        net,ext = os.path.splitext(hugin)
+        net     = os.path.basename(net)
+
+        # look for hugin file at data location
         if not os.path.exists(hugin):
-            net,ext = os.path.splitext(hugin)
-            net = os.path.basename(net)
-            nhugin = os.path.join(this.settings.location,"data", "net", "{}.net".format(net))
+            nhugin = os.path.join(this.settings.location, "data", "net", "{}.net".format(net))
             if not os.path.exists(nhugin):
                 sys.stderr.write("Bayesian network '" + hugin + "' not found. Type pg --list to show available networks.\n")
                 sys.exit(1)
@@ -111,19 +113,20 @@ class Bdd:
                 hugin = nhugin
 
         misc.require(hugin)
-        this.hugin   = hugin
-        this.net     = net
-        this.part    = this.dir + "/" + this.net + ".part"
-        this.num     = this.dir + "/" + this.net + ".num"
-        this.comp    = this.dir + "/" + this.net + ".comp"
-        this.circuit = this.dir + "/" + this.net + ".ac"
-        this.map     = this.dir + "/" + this.net + ".map"
-        this.inf     = this.dir + "/" + this.net + ".inf"
-        this.inference_out      = this.dir + "/" + this.net + ".inf.out"
-        this.compilation_out    = this.dir + "/" + this.net + ".comp.out"
-        this.part_circuit       = this.dir + "/" + this.net + ".0.ac"
-        this.multigraph_circuit = this.dir + "/" + this.net + ".mc.ac"
-        this.tdmultigraph_circuit = this.dir + "/" + this.net + ".tdmc.ac"
+
+        this.hugin                = hugin
+        this.net                  = net
+        this.part                 = os.path.join(this.dir, this.net + ".part")
+        this.num                  = os.path.join(this.dir, this.net + ".num")
+        this.comp                 = os.path.join(this.dir, this.net + ".comp")
+        this.circuit              = os.path.join(this.dir, this.net + ".ac")
+        this.map                  = os.path.join(this.dir, this.net + ".map")
+        this.inf                  = os.path.join(this.dir, this.net + ".inf")
+        this.inference_out        = os.path.join(this.dir, this.net + ".inf.out")
+        this.compilation_out      = os.path.join(this.dir, this.net + ".comp.out")
+        this.part_circuit         = os.path.join(this.dir, this.net + ".0.ac")
+        this.multigraph_circuit   = os.path.join(this.dir, this.net + ".mc.ac")
+        this.tdmultigraph_circuit = os.path.join(this.dir, this.net + ".tdmc.ac")
 
     def clean(this):
         files = [ this.part, this.num, this.comp, this.circuit, this.map, this.inf, this.part_ciruit, this.multigraph_circuit]
