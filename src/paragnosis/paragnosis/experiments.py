@@ -36,7 +36,7 @@ def run_encoding(settings):
         bdd = Bdd()
         bdd.help_encoding()
     else:
-        bdd = Bdd()
+        bdd = Bdd(settings)
         bdd.set_bayesian_network(settings.network)
         bdd.set_verbose(settings.verbose)
         bdd.run_encoding(settings.args)

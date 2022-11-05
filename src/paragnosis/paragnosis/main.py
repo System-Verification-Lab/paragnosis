@@ -9,7 +9,6 @@ from sympy import O
 from paragnosis.misc import *
 from paragnosis.bdd import *
 from paragnosis.experiments import *
-import multiprocessing
 from .defaults import defaults
 from .settings import Settings
 from .version import version
@@ -60,7 +59,7 @@ def cli():
     subparsers = parser.add_subparsers(dest='command')
 
     # encoding parser
-    encoding = subparsers.add_parser('encoding', help='Create Bayesian network encodings')
+    encoding = subparsers.add_parser('encode', help='Create Bayesian network encodings')
     encoding.add_argument(dest='network', type=str,  metavar="NETWORK", help="Provide a hugin file or a Bayesian network name provided by ./pg --list")
     encoding.add_argument('--encoding-help',dest='help',action='store_true',help='Show help for encoding')
     encoding.add_argument('--args',dest='args',nargs=argparse.REMAINDER,help="Encoding arguments",metavar='ARG')
