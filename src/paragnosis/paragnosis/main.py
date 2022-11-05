@@ -68,10 +68,10 @@ def cli():
     compilation = subparsers.add_parser('compile', help='Compile Bayesian networks')
     compilation.add_argument(                dest='network',                                         metavar="NETWORK",     type=str,             help="Provide a hugin file or a Bayesian network name provided by ./pg --list")
     compilation.add_argument('--method',     dest='bdds',       required=False, default=bdd_default, metavar='BDD',         nargs='+',            help='Type of BDD. Options are ' + ', '.join(bdd_options), choices=bdd_options)
-    compilation.add_argument('--partitions', dest='partitions', required=False, default=2,           metavar='#PARTITIONS', type=int,             help='Set number of partitions')
+    #compilation.add_argument('--partitions', dest='partitions', required=False, default=2,           metavar='#PARTITIONS', type=int,             help='Set number of partitions')
     compilation.add_argument('--overwrite',  dest='overwrite',  required=False,                                             action='store_true',  help='Overwrite ordering, partitioning, etc.')
     compilation.add_argument('--repeat',     dest='repeat',     required=False, default=1,                                  type=int,             help='Set number of compilation repeats')
-    compilation.add_argument('--cores',      dest='cores',      required=False,                      metavar="#CORES",      type=int,  nargs='+', help='Number of cores to use during parallel execution', )
+    #compilation.add_argument('--cores',      dest='cores',      required=False,                      metavar="#CORES",      type=int,  nargs='+', help='Number of cores to use during parallel execution', )
 
     # inference parser
     inference = subparsers.add_parser('inference', help='Perform inference')
@@ -82,7 +82,7 @@ def cli():
     inference.add_argument('--compare',    dest='compare',    required=False, default="",          type=str,  metavar="#NROBSERVED", nargs='?', help='Limit number of observerd variables during inference', const="")
     inference.add_argument('--cases',      dest='cases',      required=False,                      type=str,  metavar='#FILE',                  help='Provide a file with inference test cases\'')
     inference.add_argument('--method',     dest='bdds',       required=False, default=bdd_default,            metavar='BDD',         nargs='+', help='Type of BDD. Options are ' + ', '.join(bdd_options), choices=bdd_options)
-    inference.add_argument('--cores',      dest='cores',      required=False,                      type=int,  metavar="#CORES",      nargs='+', help='Number of cores to use during parallel execution', )
+    #inference.add_argument('--cores',      dest='cores',      required=False,                      type=int,  metavar="#CORES",      nargs='+', help='Number of cores to use during parallel execution', )
 
     if len(sys.argv)==1:
         parser.print_help()
