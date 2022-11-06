@@ -21,6 +21,9 @@ all: release
 pg:
 	@cd src/paragnosis && sudo pip3 install .
 	cp src/paragnosis/bin/pg bin
+	touch ~/.pgrc
+	@if ! grep -q 'location' ~/.pgrc; then echo location = $(CURRENTDIR) >> ~/.pgrc; fi
+
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
 	@$(MAKE) -Wno-dev -C $(DEFAULTBUILDDIR) install

@@ -9,7 +9,7 @@ The toolset consists of the following:
   * `bnmc`: a  c++ **B**ayesian **N**etwork **M**odel **C**ounter.
   * `pg`: a **P**ara**G**nosis user friendly jjinterface to the tools above, written in Python.
 
-The currently supported target languages are: 
+The currently supported target languages are:
 
   * Weighted Positive Binary Decision Diagrams (WPBDD)
   * Weighted Positive Multi-Valued Decision Diagrams (WPMDD)
@@ -29,11 +29,11 @@ To build all tools in the toolset, type:
 
     > make
 
-Binaries will be installed in the `<path/to/source>/bin` directory, and the `pg` script will be available system wide. 
+Binaries will be installed in the `<path/to/source>/bin` directory, and the `pg` script will be available system wide.
 
-## Configure `pg`
+## Reconfigure `pg`
 
-In order to let the `pg` script know where the toolset is located, we need to run all `pg` commands with `pg --source-dir=<path/to/source> ...`, or add to following to its configuration file `~/.pgrc`:
+In order to let the `pg` script know where the toolset is located, we can run `pg` commands with `pg --source-dir=<path/to/source> ...`, or adjust the following in `pg`'s configuration file `~/.pgrc`:
 
     location = <path/to/source>
 
@@ -95,7 +95,7 @@ Any of the shown names can be used as input for the `pg` script.
 
     > pg compile asia --method wpbdd mg tdmg
 
-#### Compile a local Hugin file to 
+#### Compile a local Hugin file to
 
     > pg compile <path/to/file>/asia.net
 
