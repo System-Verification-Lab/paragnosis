@@ -16,7 +16,7 @@ import paragnosis.misc as misc
 from .util import eprint
 
 my_env = os.environ.copy()
-my_env["LD_LIBRARY_PATH"] = "/lib/x86_64-linux-gnu:" + os.path.join(os.path.expanduser('~'), "usr", "lib") + ":" + my_env["LD_LIBRARY_PATH"]
+my_env["LD_LIBRARY_PATH"] = "/lib/x86_64-linux-gnu:" + os.path.join(os.path.expanduser('~'), "usr", "lib") + ":" + my_env.get("LD_LIBRARY_PATH", "")
 
 from time import sleep
 def signal_handler(signal, frame):
