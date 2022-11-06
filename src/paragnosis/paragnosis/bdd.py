@@ -13,6 +13,10 @@ from threading import Timer
 import time
 import traceback
 import paragnosis.misc as misc
+from .util import eprint
+
+my_env = os.environ.copy()
+my_env["LD_LIBRARY_PATH"] = "/lib/x86_64-linux-gnu:" + os.path.join(os.path.expanduser('~'), "usr", "lib") + ":" + my_env["LD_LIBRARY_PATH"]
 
 from time import sleep
 def signal_handler(signal, frame):
@@ -37,12 +41,15 @@ class Bdd:
         this.verify = False
         this.comparelimit = -1
         this.verbose = False
+        this.dot_to_ps = os.path.join(settings.location,"usr/bin/dot2ps")
         this.ace       = os.path.join(settings.location,"usr/bin/ace")
         this.compiler  = os.path.join(settings.location,"bin/bnc")
         this.inference = os.path.join(settings.location,"bin/bnmc")
         this.encoder   = os.path.join(settings.location,"bin/bn-to-cnf")
         this.timeout   = None
+        this.dot       = settings.get("dot", False)
         this.dir       = settings.output_dir
+
         if not os.path.exists(this.dir):
             os.makedirs(this.dir)
 
@@ -116,17 +123,20 @@ class Bdd:
 
         this.hugin                = hugin
         this.net                  = net
-        this.part                 = os.path.join(this.dir, this.net + ".part")
-        this.num                  = os.path.join(this.dir, this.net + ".num")
-        this.comp                 = os.path.join(this.dir, this.net + ".comp")
-        this.circuit              = os.path.join(this.dir, this.net + ".ac")
-        this.map                  = os.path.join(this.dir, this.net + ".map")
-        this.inf                  = os.path.join(this.dir, this.net + ".inf")
-        this.inference_out        = os.path.join(this.dir, this.net + ".inf.out")
-        this.compilation_out      = os.path.join(this.dir, this.net + ".comp.out")
-        this.part_circuit         = os.path.join(this.dir, this.net + ".0.ac")
-        this.multigraph_circuit   = os.path.join(this.dir, this.net + ".mc.ac")
-        this.tdmultigraph_circuit = os.path.join(this.dir, this.net + ".tdmc.ac")
+        this.base                 = os.path.join(this.dir, this.net)
+        this.part                 = this.base + ".part"
+        this.num                  = this.base + ".num"
+        this.comp                 = this.base + ".comp"
+        this.circuit              = this.base + ".ac"
+        this.map                  = this.base + ".map"
+        this.inf                  = this.base + ".inf"
+        this.inference_out        = this.base + ".inf.out"
+        this.compilation_out      = this.base + ".comp.out"
+        this.part_circuit         = this.base + ".0.ac"
+        this.multigraph_circuit   = this.base + ".mc.ac"
+        this.tdmultigraph_circuit = this.base + ".tdmc.ac"
+        this.dot_out              = this.base + ".dot"
+        this.dot_ps_out           = this.base + ".eps"
 
     def clean(this):
         files = [ this.part, this.num, this.comp, this.circuit, this.map, this.inf, this.part_ciruit, this.multigraph_circuit]
@@ -208,7 +218,6 @@ class Bdd:
                 this.compile_result[-1][4] = int(matches[3][0])
             else:
                 this.compile_result[-1][4] = -1
-
 
             if len(matches[4]) != 0:
                 this.compile_result[-1][5] = int(matches[4][0])
@@ -339,7 +348,15 @@ class Bdd:
         misc.require(this.num)
         if this.overwrite or not os.path.exists(this.circuit):
             cmd = "{:s} {:s} -t wpbdd -r elim={:s} -w map={:s} -w circuit={:s} -o collapse=0".format(this.compiler,this.hugin,this.num,this.map,this.circuit)
+            if this.dot:
+                cmd += " -w dot={:s}".format(this.dot_out)
             misc.call(cmd,this.verbose)
+            if this.dot:
+                toPs    = "{:s} {:s}".format(this.dot_to_ps, this.dot_out)
+                showDot = "{:s} {:s}".format("evince", this.dot_ps_out)
+                misc.call(toPs,this.verbose)
+                misc.call(showDot,this.verbose)
+
         else:
             term.write("    [SKIPPED]  \n")
 
@@ -435,6 +452,25 @@ class Bdd:
             cmd = "{:s} -i {:s} -s {:s}".format(this.encoder,this.hugin," ".join(args))
         misc.call(cmd,True)
 
+    def compile_with_dot(this, cmd, compile):
+        # adjust command to enable dot file creation
+        if this.dot:
+            cmd.extend(["-w", "dot={:s}".format(this.dot_out)])
+
+        compile(cmd)
+
+        if this.dot:
+            # create pdf
+            toPs    = "{:s} {:s}".format(this.dot_to_ps, this.dot_out)
+            misc.call(toPs,this.verbose)
+
+            # open the pdf with evince
+            process = subprocess.run(["evince", this.dot_ps_out], env=my_env)
+            if process.returncode != 0:
+                eprint("Could not open {}. Use a pdf viewer of your own choice to open it.".format(this.dot_ps_out))
+                sys.exit(1)
+
+
     def run_compilation(this,bdds):
         # precondition for allowed languages:
         allowed = set(['pwpbdd', 'parallel-pwpbdd','tdmg','mg','wpbdd','parallel-pwpbdd','pwpbdd','ace', 'acei', 'obdd', 'zbdd','sdd', 'sddr','parallel-wpbdd', 'parallel-pwpbdd'])
@@ -452,17 +488,17 @@ class Bdd:
         if 'mg' in bdds:
             misc.header("\n* Compile MULTIGRAPH")
             cmd = [this.compiler,this.hugin,"-r","elim={:s}".format(this.num),"-t","mg"]
-            this.compile("MG",cmd)
+            this.compile_with_dot(cmd, lambda cmd : this.compile("MG",cmd))
 
         if 'tdmg' in bdds:
             misc.header("\n* Compile TDMULTIGRAPH")
             cmd = [this.compiler,this.hugin,"-t","tdmg"]
-            this.compile("TDMG",cmd)
+            this.compile_with_dot(cmd, lambda cmd : this.compile("TDMG",cmd))
 
         if 'wpbdd' in bdds:
             misc.header("\n* Compile WPBDD")
             cmd = [this.compiler,this.hugin,"-r","elim={:s}".format(this.num),"-t","wpbdd"]
-            this.compile("WPBDD",cmd)
+            this.compile_with_dot(cmd, lambda cmd : this.compile("WPBDD",cmd))
 
         if 'pwpbdd' in bdds:
             misc.require(this.part)

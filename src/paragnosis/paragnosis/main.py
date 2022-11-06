@@ -71,6 +71,7 @@ def cli():
     #compilation.add_argument('--partitions', dest='partitions', required=False, default=2,           metavar='#PARTITIONS', type=int,             help='Set number of partitions')
     compilation.add_argument('--overwrite',  dest='overwrite',  required=False,                                             action='store_true',  help='Overwrite ordering, partitioning, etc.')
     compilation.add_argument('--repeat',     dest='repeat',     required=False, default=1,                                  type=int,             help='Set number of compilation repeats')
+    compilation.add_argument('--dot',        dest='dot',        action='store_true',                                                              help='Output the created compiled representation as a dot file')
     #compilation.add_argument('--cores',      dest='cores',      required=False,                      metavar="#CORES",      type=int,  nargs='+', help='Number of cores to use during parallel execution', )
 
     # inference parser
