@@ -24,6 +24,10 @@ pg:
 	touch ~/.pgrc
 	@if ! grep -q 'location' ~/.pgrc; then echo location = $(CURRENTDIR) >> ~/.pgrc; fi
 
+doc: readme.pdf
+
+readme.pdf: README.md
+	pandoc -V geometry:margin=1in  -o readme.pdf README.md
 
 build: $(DEFAULTBUILDDIR)/CMakeCache.txt
 	@$(MAKE) -Wno-dev -C $(DEFAULTBUILDDIR) install

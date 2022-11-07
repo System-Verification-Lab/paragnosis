@@ -19,7 +19,9 @@ The currently supported target languages are:
 
 Install requirements with `apt`:
 
-    > sudo apt-get install -y libboost-all-dev python3 python-setuptools make cmake gcc g++ libgmp-dev libgsl-dev libreadline-dev make cmake
+    > sudo apt-get install -y libboost-all-dev python3 \
+        python-setuptools make cmake gcc g++ libgmp-dev \
+        libgsl-dev libreadline-dev make cmake
 
 Install latest pip (the python package installer):
 
@@ -120,7 +122,7 @@ Any of the shown names can be used as input for the `pg` script.
 
 #### Compute all posteriors of `lung` and `xray` for evidence `bronc = yes`, and `smoke = yes`
 
-    > pg inference asia --evidence='bronc=yes,smoke=yes' --posteriors=lung,xray
+    > pg inference asia --evidence='bronc=yes,smoke=yes' --posteriors='lung,xray'
 
         ...
 
