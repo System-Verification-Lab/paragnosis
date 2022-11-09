@@ -41,6 +41,10 @@ Install latest pip (the python package installer):
 
     > sudo python3 -m pip install --upgrade pip
 
+Install 'sympy' with pip
+
+    > sudo pip3 install sympy
+
 To build all tools in the toolset, type:
 
     > make
