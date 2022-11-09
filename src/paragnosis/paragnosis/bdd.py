@@ -69,18 +69,17 @@ class Bdd:
         this.comparelimit = compare
 
     def set_posteriors(this,posteriors):
-        if posteriors:
+        if not posteriors is None:
           try:
             this.posteriors = posteriors.split(',')
           except:
-            print("Could not parse the evidence. This might be a syntax issue. Check if it satisfies var=value[, var2=value2][, var3=value3]...")
+            print("Could not parse the posteriors. This might be a syntax issue. Check if it satisfies var[,var2][,var3]...")
             sys.exit(1)
         else:
           this.posteriors = None
 
     def set_evidence(this, evidence):
         if not evidence is None:
-          print("ev: ", evidence.split(','))
           try:
             this.evidence = [{'variable': e[0], 'value': e[1]} for e in (ev.split('=') for ev in evidence.split(','))]
           except:
@@ -159,23 +158,13 @@ class Bdd:
             f.write("load tdmg {:s}\n".format(this.tdmultigraph_circuit))
         if 'mg' in bdds:
             f.write("load mg {:s}\n".format(this.multigraph_circuit))
-        if 'dlib' in bdds:
-            f.write("initdlib\n");
-        if 'lazy' in bdds:
-            f.write("lazy\n");
-        if 've' in bdds:
-            f.write("ve\n");
-        if 'shafershanoy' in bdds:
-            f.write("shafershanoy\n");
-        if 'ace' in bdds:
-            f.write("ace\n");
 
-        if this.evidence:
+        if this.evidence != None or this.posteriors != None:
             if len(bdds) != 1:
                 print('Computation of posteriors only allows specification of 1 bdd at a time')
                 sys.exit(1)
 
-            if len(this.evidence):
+            if this.evidence != None and len(this.evidence):
               f.write("evidence " + ",".join(map(lambda e : e['variable'] + '=' + e['value'], this.evidence)) + '\n')
 
             f.write("posteriors " + bdds[0] + ('' if not this.posteriors else ' ' + ','.join(this.posteriors)) + '\n')
@@ -389,7 +378,7 @@ class Bdd:
             term.write("    [SKIPPED]  \n")
 
     def run_inference(this,bdds):
-        allowed = set(['tdmg','mg','wpbdd','parallel-pwpbdd','pwpbdd','ace','dlib', 'lazy', 'shafershanoy', 've'])
+        allowed = set(['tdmg','mg','wpbdd','parallel-pwpbdd','pwpbdd'])
         if not set(bdds).issubset(allowed):
             print("Option(s) not supported for inference: ",set(bdds)-allowed)
             sys.exit(1)
