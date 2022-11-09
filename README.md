@@ -1,8 +1,22 @@
+# ParaGnosis Tool Demo
+
+
+This demo will first introduce the user to the toolset and the input formats. Then we will demonstrate three ways to use the tool:
+* Compile a Bayesian network to a knowledge base in different target languages.
+* Compare the results of the compilation process for different target languages.
+* Visualize the compilation result using dot
+* Perform various inference queries on the compiled knowledge base:
+	* marginalization,
+	* conditional probabilities, and
+	* posteriors.
+* Compare marginalization results on different target languages.
+
+
 # ParaGnosis
 
 ParaGnosis is a C++ weighted model counting toolset for linux. Its implementation is based on [[1,2,3,4]](#4). We have also added a significant number of Bayesian networks to play with (under *./data/net*)
 
-The toolset consists of the following:
+The tool consists of the following command-line tools:
 
   * `bn-to-cnf`: a c++ tool to create Conjunctive Normal Form (CNF) encodings from a Bayesian network.
   * `bnc`: a c/c++ **B**ayesian **N**etwork **C**ompiler for multiple target representations.
@@ -50,7 +64,7 @@ This should produce encoding statistics for the *asia* network.
 
 ## Examples
 
-For the following examples, we assume `location` has been set in `~/pgrc`. All available commands can be found through `pg --help`, `pg compile --help`, `pg encode --help` and `pg inference --help`.
+For the following examples, we assume `location` has been set in `~/.pgrc`. All available commands can be found through `pg --help`, `pg compile --help`, `pg encode --help` and `pg inference --help`.
 
 ### Encoding
 
