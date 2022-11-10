@@ -1,5 +1,7 @@
 # ParaGnosis
 
+[![DOI](https://zenodo.org/badge/560170574.svg)](https://zenodo.org/badge/latestdoi/560170574)
+
 ParaGnosis is a C++ weighted model counting toolset for linux. Its implementation is based on [[1,2,3,4]](#4). We have also added a significant number of Bayesian networks to play with (under *./data/net*)
 
 The toolset consists of the following command-line tools:
