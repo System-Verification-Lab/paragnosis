@@ -2,6 +2,10 @@
 
 ParaGnosis is a C++ weighted model counting toolset for linux. Its implementation is based on [[1,2,3,4]](#4). We have also added a significant number of Bayesian networks to play with (under *./data/net*)
 
+The toolset is publicly available at:
+https://github.com/gisodal/paragnosis
+
+
 The toolset consists of the following command-line tools:
 
 * `bn-to-cnf`: a c++ tool to create Conjunctive Normal Form (CNF) encodings from a Bayesian network.
@@ -58,7 +62,7 @@ All available commands can be found through `pg --help`, `pg compile --help`, `p
 ## References
 
 <a id="1">[1]</a>
-G.H. Dal, A.W. Laarman, A. Hommerso and P.J.F. Lucas, ”*A Compositional Approach to Probabilistic Knowledge Compilation*”, in International Journal of Approximate Reasoning, vol 138:38-66, 2021.
+G.H. Dal, A.W. Laarman, A. Hommersom and P.J.F. Lucas, ”*A Compositional Approach to Probabilistic Knowledge Compilation*”, in International Journal of Approximate Reasoning, vol 138:38-66, 2021.
 
 <a id="2">[2]</a>
 G.H. Dal, A.W. Laarman and P.J.F. Lucas, ”*Parallel Probabilistic Inference by Weighted Model Counting*”, in Proceeding of the International Conference on Probabilistic Graphical Models, PMLR, vol 72:97-108, 2018.
