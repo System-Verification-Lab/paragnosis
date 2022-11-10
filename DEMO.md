@@ -127,7 +127,7 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 
 <img src="doc/icy_roads_tdmg.png" alt="Icy Roads TD-WPMDD" width="600"/>
 
-#### Directly visualize the TD-WPMDD
+#### Directly visualize the WPMDD
 
     > pg compile icy_roads --method mg --dot
 
