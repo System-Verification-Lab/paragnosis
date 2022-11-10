@@ -35,7 +35,7 @@ The `pg` script is installed system wide, and directly available from the comman
 The toolset comes with a comprehensive list of Bayesian networks to play with. To get a list of available networks, type:
 
     > pg --list
-    
+
         3nt
         4sp
         6hj
@@ -49,9 +49,9 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Show encoding statistics for the *asia* network
 
     > pg encode asia
-    
+
         ...
-    
+
         Variables       : 8
         Probabilities   : 36
         Deterministic   : 8
@@ -66,18 +66,18 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Compile *asia* to a TD-WPMDD
 
     > pg compile asia
-    
+
         ...
-    
+
         FINAL RESULT:
-    
+
             Spanning tree     : 0.011ms
             Compilation       : 0.015ms
             Total Or #nodes   : 23
             Total And #nodes  : 6
             Total time        : 0.000s
             Total time        : 0.026ms
-    
+
             Total #nodes      : 29
             Total #edges      : 58
             Total #operators  : 144
@@ -85,16 +85,16 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Compile *asia* to a WPBDD
 
     > pg compile asia --method wpbdd
-    
+
         ...
-    
+
         FINAL RESULT:
-    
+
             Compiled CPTs in  : 0.000s
             Conjoined CPTs in : 0.000s
             Total time        : 0.000s
             Total time        : 0.244ms
-    
+
             Total #nodes      : 45
             Total #edges      : 90
             Total #operators  : 124
@@ -102,9 +102,9 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Compare compilation between WPBDD, a WPMDD, and a TD-WPMDD
 
     > pg compile asia --method wpbdd mg tdmg
-    
+
         ...
-    
+
          nr  | type   |  seconds | milliseconds |   speed-down |    operators |   nodes |   edges
          ----|--------|----------|--------------|--------------|--------------|---------|---------
            0 | TDMG   |    0.000 |        0.031 |        1.000 |          144 |      29 |     58
@@ -129,7 +129,7 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 
 #### Directly visualize the TD-WPMDD
 
-    > pg compile icy_roads --method tdmg --dot
+    > pg compile icy_roads --method mg --dot
 
 <img src="doc/icy_roads_mg.png" alt="Icy Roads WPMDD"/>
 
@@ -138,9 +138,9 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Verify *icy roads* posteriors, previously shown
 
     > pg inference --posteriors="" icy_roads
-    
+
     ...
-    
+
     Holmes=yes: 0.590000
     Holmes=no: 0.410000
     Icy=yes: 0.700000
@@ -151,9 +151,9 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Run every possible marginalization on a network using TD-WPMDD (press ctrl-c to stop)
 
     > pg inference asia
-    
+
         ...
-    
+
          nr |         type |  cores |      queries | milliseconds |         ms/q
         ----|--------------|--------|--------------|--------------|--------------
           0 | TDMULTIGRAPH |      1 |        18360 |       8.7516 |       0.0005
@@ -161,9 +161,9 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Compare WPBDD inference speed with TD-WPBDD
 
     > pg inference asia --method wpbdd tdmg --compare
-    
+
         ...
-    
+
          nr |         type |  cores |      queries | milliseconds |         ms/q |   speed-down
         ----|--------------|--------|--------------|--------------|--------------|--------------
           0 | WPBDD        |      1 |        18360 |       5.7327 |       0.0003 |         1.00
@@ -172,18 +172,18 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Compute conditional probability P(tub | bronc = yes, smoke = yes) for the *asia* netwrok
 
     > pg inference asia --evidence='bronc=yes,smoke=yes' --posteriors='tub'
-    
+
         ...
-    
+
         tub=yes: 0.010400
         tub=no: 0.989600
 
 #### Compute posteriors of `lung` and `xray` for evidence `bronc = yes`, and `smoke = yes`
 
     > pg inference asia --evidence='bronc=yes,smoke=yes' --posteriors='lung,xray'
-    
+
         ...
-    
+
         lung=yes: 0.100000
         lung=no: 0.900000
         xray=yes: 0.151705
@@ -192,9 +192,9 @@ Any of the shown names can be used as input for the `pg` script. You can also pr
 #### Compute posteriors all non-observed variables, for evidence `bronc = yes`, and `smoke = yes`.
 
     > pg inference asia --evidence='bronc=yes,smoke=yes'
-    
+
         ...
-    
+
         asia=yes: 0.010000
         asia=no: 0.990000
         dysp=yes: 0.810936
