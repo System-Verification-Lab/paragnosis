@@ -53,7 +53,7 @@ This should produce encoding statistics for the *asia* network.
 
 ## Usage
 
-All available commands can be found through `pg --help`, `pg compile --help`, `pg encode --help` and `pg inference --help`. For comprehensive examples, please see the [demo](demo.md).
+All available commands can be found through `pg --help`, `pg compile --help`, `pg encode --help` and `pg inference --help`. For comprehensive examples, please see the [demo](DEMO.md).
 
 ## References
 
