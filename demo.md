@@ -44,7 +44,7 @@ The toolset comes with a comprehensive list of Bayesian networks to play with. T
         alarm
         ...
 
-Any of the shown names can be used as input for the `pg` script.
+Any of the shown names can be used as input for the `pg` script. You can also provide a locally stored Bayesian network filename with `.net` extension (HUGIN format).
 
 #### Show encoding statistics for the *asia* network
 
@@ -111,12 +111,9 @@ Any of the shown names can be used as input for the `pg` script.
            1 | MG     |    0.000 |        0.089 |        2.871 |          132 |      22 |     44
            2 | WPBDD  |    0.000 |        0.155 |        5.000 |          124 |      45 |     90
 
-#### Compile a local Hugin file to
-
-    > pg compile <path/to/file>/asia.net
+#### The following is the *icy roads* Bayesian network that we want to compile
 
 <img src="doc/icy_roads_bn.png" alt="Icy Roads BN" width="400"/>
-
 
 #### Directly visualize the WPBDD for the *icy_roads* network
 
@@ -136,7 +133,20 @@ Any of the shown names can be used as input for the `pg` script.
 
 <img src="doc/icy_roads_mg.png" alt="Icy Roads WPMDD"/>
 
-### **Perform Inference**
+### Perform Inference
+
+#### Verify *icy roads* posteriors, previously shown
+
+    > pg inference --posteriors="" icy_roads
+    
+    ...
+    
+    Holmes=yes: 0.590000
+    Holmes=no: 0.410000
+    Icy=yes: 0.700000
+    Icy=no: 0.300000
+    Watson=yes: 0.590000
+    Watson=no: 0.410000
 
 #### Run every possible marginalization on a network using TD-WPMDD (press ctrl-c to stop)
 
@@ -159,7 +169,7 @@ Any of the shown names can be used as input for the `pg` script.
           0 | WPBDD        |      1 |        18360 |       5.7327 |       0.0003 |         1.00
           1 | TDMULTIGRAPH |      1 |        18360 |      10.5697 |       0.0006 |         1.84
 
-#### Compute P(tub | bronc = yes, smoke = yes) for the *asia* netwrok
+#### Compute conditional probability P(tub | bronc = yes, smoke = yes) for the *asia* netwrok
 
     > pg inference asia --evidence='bronc=yes,smoke=yes' --posteriors='tub'
     
